@@ -1,122 +1,60 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './styles/global.scss';
+import Header from './component/Header';
+import DashboardView from './component/DashboardView';
+import SettingsView from './component/SettingsView';
+import AlertModal from './component/AlertModal';
+import useArduinoData from './hooks/useArduinoData';
 
-function App() {
-  const [count, setCount] = useState(0)
+// global.scss 의 $bp-tablet(768px) 과 동일한 기준
+const MOBILE_QUERY = '(max-width: 768px)';
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia(MOBILE_QUERY).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY);
+    const onChange = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return isMobile;
 }
 
-export default App
+export default function App() {
+  const [view, setView] = useState('dashboard'); // 'dashboard' | 'settings'
+  const isMobile = useIsMobile();
+  const data = useArduinoData();
+
+  const goSettings = () => { data.closeAlertModal(); setView('settings'); };
+  // TODO: 알림 이력 화면이 생기면 이곳에서 해당 화면으로 이동
+  const goHistory = () => { data.closeAlertModal(); setView('dashboard'); };
+
+  return (
+    <div className="app-wrapper">
+      <Header view={view} onNavigate={setView} connected={data.connected} isMobile={isMobile} />
+
+      <main className="page-container">
+        {view === 'dashboard' ? (
+          <DashboardView data={data} isMobile={isMobile} onNavigate={setView} />
+        ) : (
+          <SettingsView
+            settings={data.settings}
+            isMobile={isMobile}
+            onSave={data.saveSettings}
+          />
+        )}
+      </main>
+
+      {data.alertModalOpen && (
+        <AlertModal
+          alert={data.alert}
+          isMobile={isMobile}
+          onDismiss={data.dismissAlert}
+          onClose={data.closeAlertModal}
+          onOpenSettings={goSettings}
+          onOpenHistory={goHistory}
+        />
+      )}
+    </div>
+  );
+}

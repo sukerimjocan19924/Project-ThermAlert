@@ -1,0 +1,132 @@
+@use '../styles/variables' as *;
+
+.overlay {
+    padding: $space-7;
+}
+
+.modal {
+    width: 420px;
+    max-width: 100%;
+}
+
+.modalMobile {
+    width: 100%;
+}
+
+:global(.modal__body).bodyMobile {
+    padding: 36px $space-9 $space-10;
+}
+
+.head {
+    text-align: center;
+}
+
+.title {
+    font-size: $font-size-5xl;
+    font-weight: $font-weight-black;
+    color: $color-danger-600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+}
+
+.sub {
+    font-size: $font-size-md;
+    color: $color-text-muted;
+    margin-top: $space-2;
+}
+
+.values {
+    display: flex;
+    gap: $space-5;
+    width: 100%;
+}
+
+.valueBox {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-7 $space-3 $space-6;
+    border-radius: $radius-base;
+    border: 1px solid;
+    text-align: center;
+
+    &.danger {
+        background: $color-danger-50;
+        border-color: $color-danger-200;
+    }
+
+    &.blue {
+        background: $color-primary-50;
+        border-color: $color-primary-200;
+    }
+}
+
+.valueLabel {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+}
+
+.valueNumber {
+    font-family: $font-family-number;
+    font-size: $font-size-hero-sm;
+    font-weight: $font-weight-black;
+    line-height: 1;
+
+    .danger & {
+        color: $color-danger-600;
+    }
+
+    .blue & {
+        color: $color-primary-600;
+    }
+}
+
+.valueUnit {
+    font-size: $font-size-xl;
+    margin-left: 2px;
+}
+
+:global(.info-banner).infoList {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: $space-3;
+}
+
+.infoRow {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    font-size: $font-size-sm;
+
+    strong {
+        color: $color-orange-600;
+    }
+}
+
+.actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+}
+
+.subActions {
+    display: grid;
+    grid-template-columns: 1.1fr 1.1fr 0.7fr;
+    gap: $space-3;
+
+    &.mobile {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.footnote {
+    font-size: $font-size-xs;
+    color: $color-gray-400;
+    text-align: center;
+}
