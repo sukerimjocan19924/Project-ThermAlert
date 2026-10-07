@@ -1,0 +1,232 @@
+// ============================================================
+// _variables.scss
+// Arduino IoT Dashboard — Design Tokens
+// ============================================================
+
+// ─── Brand / Primary (Blue) ─────────────────────────────────
+$color-primary-900: #1e3a8a;
+$color-primary-800: #1e40af;
+$color-primary-700: #1d4ed8;
+$color-primary-600: #2563eb;
+$color-primary-500: #3b82f6;
+$color-primary-400: #60a5fa;
+$color-primary-300: #93c5fd;
+$color-primary-200: #bfdbfe;
+$color-primary-100: #dbeafe;
+$color-primary-50: #eff6ff;
+
+// ─── Danger / Temperature Alert (Red) ───────────────────────
+$color-danger-900: #7f1d1d;
+$color-danger-800: #991b1b;
+$color-danger-700: #b91c1c;
+$color-danger-600: #dc2626;
+$color-danger-500: #ef4444;
+$color-danger-400: #f87171;
+$color-danger-300: #fca5a5;
+$color-danger-200: #fecaca;
+$color-danger-100: #fee2e2;
+$color-danger-50: #fef2f2;
+
+// ─── Success / Humidity Normal (Green) ──────────────────────
+$color-success-900: #14532d;
+$color-success-800: #166534;
+$color-success-700: #15803d;
+$color-success-600: #16a34a;
+$color-success-500: #22c55e;
+$color-success-400: #4ade80;
+$color-success-300: #86efac;
+$color-success-200: #bbf7d0;
+$color-success-100: #dcfce7;
+$color-success-50: #f0fdf4;
+
+// ─── Warning / Buzzer / Alert (Purple) ──────────────────────
+$color-warning-900: #4c1d95;
+$color-warning-800: #5b21b6;
+$color-warning-700: #6d28d9;
+$color-warning-600: #7c3aed;
+$color-warning-500: #8b5cf6;
+$color-warning-400: #a78bfa;
+$color-warning-300: #c4b5fd;
+$color-warning-200: #ddd6fe;
+$color-warning-100: #ede9fe;
+$color-warning-50: #f5f3ff;
+
+// ─── Orange / Stats High ────────────────────────────────────
+$color-orange-900: #7c2d12;
+$color-orange-800: #9a3412;
+$color-orange-700: #c2410c;
+$color-orange-600: #ea580c;
+$color-orange-500: #f97316;
+$color-orange-400: #fb923c;
+$color-orange-300: #fdba74;
+$color-orange-200: #fed7aa;
+$color-orange-100: #ffedd5;
+$color-orange-50: #fff7ed;
+
+// ─── Amber / Clock / Info ────────────────────────────────────
+$color-amber-600: #d97706;
+$color-amber-500: #f59e0b;
+$color-amber-400: #fbbf24;
+$color-amber-200: #fde68a;
+$color-amber-100: #fef3c7;
+$color-amber-50: #fffbeb;
+
+// ─── Neutral / Gray ─────────────────────────────────────────
+$color-gray-950: #030712;
+$color-gray-900: #111827;
+$color-gray-800: #1f2937;
+$color-gray-700: #374151;
+$color-gray-600: #4b5563;
+$color-gray-500: #6b7280;
+$color-gray-400: #9ca3af;
+$color-gray-300: #d1d5db;
+$color-gray-200: #e5e7eb;
+$color-gray-100: #f3f4f6;
+$color-gray-50: #f9fafb;
+$color-white: #ffffff;
+
+// ─── Semantic Aliases ────────────────────────────────────────
+$color-bg-app: #f0f6ff; // 앱 전체 배경
+$color-bg-app-mobile: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%);
+$color-bg-card: $color-white;
+$color-bg-header-from: $color-primary-800;
+$color-bg-header-to: $color-primary-600;
+$color-text-primary: $color-gray-900;
+$color-text-secondary: $color-gray-700;
+$color-text-muted: $color-gray-500;
+$color-text-placeholder: $color-gray-400;
+$color-text-disabled: $color-gray-300;
+$color-border: $color-gray-200;
+$color-border-light: $color-gray-100;
+$color-divider: $color-gray-100;
+
+// ─── Sensor Status Colors ────────────────────────────────────
+$color-temp-value: $color-danger-600;
+$color-temp-icon: $color-danger-500;
+$color-temp-bg: $color-danger-100;
+$color-temp-border: $color-danger-200;
+$color-hum-value: $color-success-600;
+$color-hum-icon: $color-success-500;
+$color-hum-bg: $color-success-100;
+$color-hum-border: $color-success-200;
+$color-led-on: $color-danger-500;
+$color-buz-on: $color-warning-600;
+$color-mode-auto: $color-success-500;
+$color-mode-text: $color-primary-600;
+
+// ─── Typography ──────────────────────────────────────────────
+$font-family-primary: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+$font-family-mono: 'Inter', 'Roboto Mono', monospace;
+$font-family-number: 'Inter', $font-family-primary;
+
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+$font-weight-black: 900;
+
+$font-size-2xs: 10px;
+$font-size-xs: 11px;
+$font-size-sm: 12px;
+$font-size-md: 13px;
+$font-size-base: 14px;
+$font-size-lg: 15px;
+$font-size-xl: 16px;
+$font-size-2xl: 17px;
+$font-size-3xl: 18px;
+$font-size-4xl: 20px;
+$font-size-5xl: 22px;
+$font-size-6xl: 24px;
+$font-size-hero-sm: 36px;
+$font-size-hero-md: 42px;
+$font-size-hero-lg: 44px;
+
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-loose: 1.75;
+
+// ─── Spacing ─────────────────────────────────────────────────
+$space-1: 4px;
+$space-2: 6px;
+$space-3: 8px;
+$space-4: 10px;
+$space-5: 12px;
+$space-6: 14px;
+$space-7: 16px;
+$space-8: 18px;
+$space-9: 20px;
+$space-10: 24px;
+$space-11: 28px;
+$space-12: 32px;
+$space-14: 40px;
+
+// ─── Border Radius ───────────────────────────────────────────
+$radius-full: 9999px;
+$radius-2xl: 24px;
+$radius-xl: 20px;
+$radius-lg: 18px;
+$radius-md: 16px;
+$radius-base: 14px;
+$radius-sm: 12px;
+$radius-xs: 10px;
+$radius-2xs: 8px;
+$radius-3xs: 6px;
+
+// ─── Shadows ─────────────────────────────────────────────────
+$shadow-none: none;
+$shadow-xs: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+$shadow-sm: 0 2px 8px 0 rgba(37, 99, 235, 0.08);
+$shadow-md: 0 2px 16px 0 rgba(37, 99, 235, 0.12);
+$shadow-lg: 0 4px 24px 0 rgba(37, 99, 235, 0.16);
+$shadow-xl: 0 8px 40px 0 rgba(0, 0, 0, 0.16);
+$shadow-modal: 0 20px 80px 0 rgba(0, 0, 0, 0.34);
+
+$shadow-card: 0 2px 16px 0 rgba(37, 99, 235, 0.10);
+$shadow-card-hover: 0 6px 24px 0 rgba(37, 99, 235, 0.18);
+$shadow-card-danger: 0 2px 16px 0 rgba(239, 68, 68, 0.14);
+$shadow-btn-primary: 0 4px 14px 0 rgba(30, 64, 175, 0.40);
+$shadow-btn-danger: 0 4px 16px 0 rgba(239, 68, 68, 0.45);
+$shadow-dot-red: 0 0 8px 2px rgba(239, 68, 68, 0.50);
+$shadow-dot-purple: 0 0 8px 2px rgba(124, 58, 237, 0.50);
+$shadow-dot-green: 0 0 6px 2px rgba(34, 197, 94, 0.40);
+
+// ─── Gradients ───────────────────────────────────────────────
+$gradient-header: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+$gradient-header-v: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
+$gradient-bg-mobile: linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%);
+$gradient-bar-temp: linear-gradient(90deg, #fca5a5 0%, #ef4444 100%);
+$gradient-bar-hum: linear-gradient(90deg, #86efac 0%, #22c55e 100%);
+$gradient-alert-top: linear-gradient(90deg, #dc2626 0%, #f97316 100%);
+$gradient-save-btn: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+
+// ─── Layout ──────────────────────────────────────────────────
+$layout-mobile-width: 390px;
+$layout-desktop-width: 1440px;
+$layout-sidebar-width: 220px;
+$layout-sidebar-width-v2: 232px;
+$layout-right-panel: 280px;
+$layout-header-height: 64px;
+$layout-content-padding: $space-11; // 28px
+
+// ─── Breakpoints ─────────────────────────────────────────────
+$bp-mobile: 390px;
+$bp-tablet: 768px;
+$bp-laptop: 1024px;
+$bp-desktop: 1280px;
+$bp-wide: 1440px;
+
+// ─── Transitions ─────────────────────────────────────────────
+$transition-fast: 150ms ease;
+$transition-base: 250ms ease;
+$transition-slow: 400ms ease;
+$transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ─── Z-index ─────────────────────────────────────────────────
+$z-base: 1;
+$z-card: 10;
+$z-header: 100;
+$z-sidebar: 200;
+$z-overlay: 900;
+$z-modal: 1000;
+$z-toast: 1100;
