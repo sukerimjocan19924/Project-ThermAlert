@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import {
   Check,
   Droplets,
@@ -10,38 +11,57 @@ import {
   Thermometer,
   Timer,
 } from "lucide-react";
+
 import { DEFAULT_SETTINGS } from "../hooks/useArduinoData";
+
 import { clamp, formatInterval } from "../utils/formatters";
+
 import styles from "./SettingsView.module.scss";
 
 const INTERVALS = [1, 5, 10, 30, 60, 300];
 
 /* ────────────────────────────────────────────────────────────
+
    듀얼 썸 범위 슬라이더 (포인터 드래그)
+
 ──────────────────────────────────────────────────────────── */
+
 function RangeSlider({
   min,
+
   max,
+
   low,
+
   high,
+
   step = 1,
+
   variant,
+
   labels,
+
   onChange,
 }) {
   const trackRef = useRef(null);
+
   const pct = (v) => ((v - min) / (max - min)) * 100;
 
   const valueFromEvent = (e) => {
     const rect = trackRef.current.getBoundingClientRect();
+
     const ratio = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+
     return Math.round((min + ratio * (max - min)) / step) * step;
   };
 
   const startDrag = (e) => e.currentTarget.setPointerCapture(e.pointerId);
+
   const drag = (which) => (e) => {
     if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+
     const v = valueFromEvent(e);
+
     if (which === "low") onChange(clamp(v, min, high - step), high);
     else onChange(low, clamp(v, low + step, max));
   };
@@ -55,6 +75,7 @@ function RangeSlider({
           className={`range-slider__fill range-slider__fill--${variant}`}
           style={{ left: `${pct(low)}%`, width: `${pct(high) - pct(low)}%` }}
         />
+
         <div
           className={`range-slider__thumb range-slider__thumb--blue ${styles.thumb}`}
           style={{ left: `${pct(low)}%` }}
@@ -66,6 +87,7 @@ function RangeSlider({
           aria-valuemax={max}
           aria-valuenow={low}
         />
+
         <div
           className={`range-slider__thumb range-slider__thumb--${highColor} ${styles.thumb}`}
           style={{ left: `${pct(high)}%` }}
@@ -78,6 +100,7 @@ function RangeSlider({
           aria-valuenow={high}
         />
       </div>
+
       <div className="range-slider__scale">
         {labels.map((l) => (
           <span key={l}>{l}</span>
@@ -88,14 +111,18 @@ function RangeSlider({
 }
 
 /* 값 박스 + (−) (+) 스테퍼 */
+
 function ValueField({ label, value, unit, tone, rightBtn, onMinus, onPlus }) {
   return (
     <div className={styles.field}>
       <div className={styles.fieldLabel}>{label}</div>
+
       <div className={`value-input value-input--${tone}`}>
         <span className="value-number">{value}</span>
+
         <span className="value-unit">{unit}</span>
       </div>
+
       <div className={`stepper ${styles.stepperRow}`}>
         <button
           type="button"
@@ -105,6 +132,7 @@ function ValueField({ label, value, unit, tone, rightBtn, onMinus, onPlus }) {
         >
           <Minus size={14} color="#6b7280" />
         </button>
+
         <button
           type="button"
           className={`stepper__btn stepper__btn--${rightBtn}`}
@@ -126,38 +154,81 @@ function SectionTitle({ iconClass, icon, title, desc, right }) {
           <div className={`kpi-card__icon ${iconClass} ${styles.iconBox}`}>
             {icon}
           </div>
+
           <div>
             <div className={styles.titleText}>{title}</div>
+
             <div className={styles.titleDesc}>{desc}</div>
           </div>
         </div>
+
         {right}
       </div>
+
       <div className="settings-card__divider" />
     </>
   );
 }
 
 /* ────────────────────────────────────────────────────────────
+
    Settings
+
 ──────────────────────────────────────────────────────────── */
+
 export default function SettingsView({ settings, isMobile, onSave }) {
-  const [draft, setDraft] = useState(settings);
+  const [draft, setDraft] = useState(() => ({
+    ...settings,
+    interval: settings.interval ?? 5,
+  }));
+
   const [saved, setSaved] = useState(false);
 
-  useEffect(() => setDraft(settings), [settings]);
+  useEffect(() => {
+    setDraft((current) => ({
+      ...current,
+      tempMin: settings.tempMin,
+      tempMax: settings.tempMax,
+      humMin: settings.humMin,
+      humMax: settings.humMax,
+      interval: settings.interval ?? current.interval ?? 5,
+    }));
+  }, [
+    settings.tempMin,
+    settings.tempMax,
+    settings.humMin,
+    settings.humMax,
+    settings.interval,
+  ]);
+
   useEffect(() => {
     if (!saved) return undefined;
+
     const id = setTimeout(() => setSaved(false), 2000);
+
     return () => clearTimeout(id);
   }, [saved]);
 
   const set = (patch) => setDraft((d) => ({ ...d, ...patch }));
-  const handleSave = () => {
-    onSave(draft);
-    setSaved(true);
+
+  const handleSave = async () => {
+    try {
+      await onSave(draft);
+      setSaved(true);
+    } catch (error) {
+      console.error("설정 저장 실패:", error);
+      window.alert("설정을 저장하지 못했습니다. ESP32 연결을 확인해 주세요.");
+    }
   };
-  const handleReset = () => setDraft(DEFAULT_SETTINGS);
+
+  const handleReset = () =>
+    setDraft({
+      tempMin: DEFAULT_SETTINGS.minTemp,
+      tempMax: DEFAULT_SETTINGS.maxTemp,
+      humMin: DEFAULT_SETTINGS.minHum,
+      humMax: DEFAULT_SETTINGS.maxHum,
+      interval: settings.interval ?? 5,
+    });
 
   const actions = (
     <div className={styles.actions}>
@@ -166,6 +237,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
           <Check size={13} /> 저장됨
         </span>
       )}
+
       <button
         type="button"
         className={`btn btn--ghost ${styles.ghost}`}
@@ -173,6 +245,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
       >
         <RotateCcw size={15} /> 초기화
       </button>
+
       <button
         type="button"
         className={`btn btn--primary ${styles.primary}`}
@@ -191,16 +264,19 @@ export default function SettingsView({ settings, isMobile, onSave }) {
         <div className={styles.head}>
           <div>
             <h1 className={styles.pageTitle}>센서 범위 설정</h1>
+
             <p className={styles.pageSub}>
               알림 임계값 및 측정 주기를 설정합니다
             </p>
           </div>
+
           {actions}
         </div>
       )}
 
       <div className={styles.grid}>
         {/* 온도 */}
+
         <section className="settings-card">
           <SectionTitle
             iconClass="kpi-card__icon--red"
@@ -208,6 +284,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
             title="온도 설정"
             desc="알림 온도 범위를 설정하세요"
           />
+
           <div className={styles.fields}>
             <ValueField
               label="최고 온도 (상한)"
@@ -226,7 +303,9 @@ export default function SettingsView({ settings, isMobile, onSave }) {
                 })
               }
             />
+
             <div className={styles.fieldDivider} />
+
             <ValueField
               label="최저 온도 (하한)"
               value={draft.tempMin}
@@ -245,10 +324,12 @@ export default function SettingsView({ settings, isMobile, onSave }) {
           <div className={styles.sliderBlock}>
             <div className={styles.sliderHead}>
               <strong>범위 슬라이더</strong>
+
               <strong className={styles.rangeTemp}>
                 {draft.tempMin}°C ~ {draft.tempMax}°C
               </strong>
             </div>
+
             <RangeSlider
               min={0}
               max={40}
@@ -264,6 +345,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
             className={`info-banner info-banner--warning ${styles.bannerGap}`}
           >
             <Info size={14} />
+
             <span className="info-banner__text">
               범위를 벗어나면 LED 및 부저가 작동합니다.
             </span>
@@ -271,6 +353,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
         </section>
 
         {/* 습도 */}
+
         <section className="settings-card">
           <SectionTitle
             iconClass="kpi-card__icon--green"
@@ -278,6 +361,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
             title="습도 설정"
             desc="알림 습도 범위를 설정하세요"
           />
+
           <div className={styles.fields}>
             <ValueField
               label="최고 습도 (상한)"
@@ -292,7 +376,9 @@ export default function SettingsView({ settings, isMobile, onSave }) {
                 set({ humMax: clamp(draft.humMax + 1, draft.humMin + 1, 100) })
               }
             />
+
             <div className={styles.fieldDivider} />
+
             <ValueField
               label="최저 습도 (하한)"
               value={draft.humMin}
@@ -311,10 +397,12 @@ export default function SettingsView({ settings, isMobile, onSave }) {
           <div className={styles.sliderBlock}>
             <div className={styles.sliderHead}>
               <strong>범위 슬라이더</strong>
+
               <strong className={styles.rangeHum}>
                 {draft.humMin}% ~ {draft.humMax}%
               </strong>
             </div>
+
             <RangeSlider
               min={0}
               max={100}
@@ -330,6 +418,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
             className={`info-banner info-banner--success ${styles.bannerGap}`}
           >
             <Info size={14} />
+
             <span className="info-banner__text">
               습도가 범위를 벗어나면 환기 알림이 발생합니다.
             </span>
@@ -338,6 +427,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
       </div>
 
       {/* 측정 주기 */}
+
       <section className="settings-card">
         <SectionTitle
           iconClass="kpi-card__icon--purple"
@@ -346,18 +436,21 @@ export default function SettingsView({ settings, isMobile, onSave }) {
           desc="Arduino 센서 데이터 수집 간격"
           right={
             <strong className={styles.currentInterval}>
-              현재: {formatInterval(settings.interval)}
+              현재: {formatInterval(draft.interval)}
             </strong>
           }
         />
+
         <div className="interval-options">
           {INTERVALS.map((sec) => {
             const selected = draft.interval === sec;
+
             const cls = selected
               ? "interval-btn--active"
-              : settings.interval === sec
+              : draft.interval === sec
                 ? "interval-btn--outline"
                 : "interval-btn--inactive";
+
             return (
               <button
                 key={sec}
@@ -366,6 +459,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
                 onClick={() => set({ interval: sec })}
               >
                 {selected && <Check size={12} />}
+
                 {formatInterval(sec)}
               </button>
             );
@@ -374,6 +468,7 @@ export default function SettingsView({ settings, isMobile, onSave }) {
       </section>
 
       {/* 모바일 하단 고정 액션 */}
+
       {isMobile && <div className={styles.mobileBar}>{actions}</div>}
     </div>
   );

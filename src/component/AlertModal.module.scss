@@ -117,7 +117,7 @@
 
 .subActions {
     display: grid;
-    grid-template-columns: 1.1fr 1.1fr 0.7fr;
+    grid-template-columns: 1.1fr 1.1fr;
     gap: $space-3;
 
     &.mobile {

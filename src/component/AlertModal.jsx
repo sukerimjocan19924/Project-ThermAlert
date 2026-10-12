@@ -135,15 +135,6 @@ export default function AlertModal({
                 <SlidersHorizontal size={13} />{" "}
                 {isMobile ? "설정 변경" : "센서 설정 변경"}
               </button>
-              {!isMobile && (
-                <button
-                  type="button"
-                  className="btn btn--ghost btn--sm"
-                  onClick={onOpenHistory}
-                >
-                  <History size={13} /> 알림 이력 보기
-                </button>
-              )}
               <button
                 type="button"
                 className="btn btn--ghost btn--sm"
