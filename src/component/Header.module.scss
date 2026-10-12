@@ -1,0 +1,51 @@
+@use '../styles/variables' as *;
+
+.mobileLeft {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+}
+
+.backBtn {
+    display: flex;
+    color: $color-white;
+}
+
+.mobileTitle {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-black;
+    color: $color-white;
+    line-height: $line-height-tight;
+}
+
+.mobileSub {
+    font-size: $font-size-xs;
+    color: $color-primary-300;
+    margin-top: 2px;
+}
+
+.mobilePill {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 5px $space-5;
+    background: $color-success-600;
+    border-radius: $radius-full;
+    color: $color-white;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+
+    &.off {
+        background: $color-gray-500;
+    }
+}
+
+.pillDot {
+    width: 8px;
+    height: 8px;
+    background: $color-white;
+}
+
+:global(.app-header) :global(.status-pill).pillOff {
+    background: $color-gray-500;
+}

@@ -1,0 +1,321 @@
+@use '../styles/variables' as *;
+
+// ─── Layout ──────────────────────────────────────────────────
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: $space-9;
+}
+
+.contentMobile {
+    gap: $space-6;
+}
+
+// 센서 범위 설정 버튼 : 모바일에서만 노출 (데스크탑은 헤더 메뉴 사용)
+.settingsBar {
+    display: none;
+    justify-content: flex-end;
+
+    @media (max-width: $bp-tablet) {
+        display: flex;
+    }
+}
+
+.kpiGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $space-7;
+}
+
+.mainGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: $space-9;
+    align-items: start;
+}
+
+.sideCol {
+    display: flex;
+    flex-direction: column;
+    gap: $space-7;
+}
+
+.twoCol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-5;
+}
+
+.threeCol {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-4;
+}
+
+// ─── Sensor / Device Card ────────────────────────────────────
+.cardDanger {
+    box-shadow: $shadow-card-danger;
+}
+
+// 전역(global.scss) 클래스와 겹치는 규칙은 :global(...) 를 함께 써서 우선순위를 확보
+:global(.kpi-card__value--unit).unit {
+    font-size: $font-size-4xl;
+}
+
+:global(.kpi-card__badge).badgeIdle {
+    background: $color-gray-100;
+    color: $color-gray-500;
+    border-color: $color-gray-200;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+:global(.kpi-card__value).deviceValue {
+    align-items: center;
+    gap: $space-4;
+}
+
+.valueRed {
+    color: $color-danger-500;
+}
+
+.valuePurple {
+    color: $color-warning-600;
+}
+
+.valueOff {
+    color: $color-gray-400;
+}
+
+.desc {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+}
+
+// ─── Mode Card ───────────────────────────────────────────────
+.modeCard {
+    padding: $space-9;
+}
+
+.modeHead {
+    display: flex;
+    align-items: center;
+    gap: $space-5;
+    margin-bottom: $space-6;
+}
+
+:global(.kpi-card__icon).modeIcon {
+    width: 40px;
+    height: 40px;
+}
+
+.modeTitle {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-lg;
+}
+
+.modeSub {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+}
+
+.modeList {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.panelDivider {
+    margin-bottom: $space-5;
+}
+
+:global(.status-dot).smallDot {
+    width: 8px;
+    height: 8px;
+}
+
+// ─── Alert Banner ────────────────────────────────────────────
+.bannerTitle {
+    font-weight: $font-weight-extrabold;
+    font-size: $font-size-base;
+    color: $color-danger-600;
+}
+
+.bannerSub {
+    font-size: $font-size-sm;
+    color: $color-danger-500;
+}
+
+.bannerInfo {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    margin-bottom: $space-6;
+}
+
+// ─── Chart ───────────────────────────────────────────────────
+.chart {
+    width: 100%;
+    height: auto;
+}
+
+:global(.chart-card).chartMobile {
+    padding: $space-7;
+}
+
+:global(.chart-card__header).chartHeaderMobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-3;
+}
+
+.legendRed {
+    background: $color-danger-500;
+}
+
+.legendBlue {
+    background: $color-primary-500;
+}
+
+:global(.badge).rangeBadge {
+    background: $color-gray-100;
+    color: $color-gray-600;
+    border-color: $color-gray-200;
+    padding: $space-2 $space-5;
+    gap: $space-2;
+}
+
+// ─── Stats (mobile boxes) ────────────────────────────────────
+.statBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-1;
+    padding: $space-5 $space-5;
+    border-radius: $radius-sm;
+    border: 1px solid;
+    min-width: 0;
+
+    &.orange {
+        --tone: #{$color-orange-600};
+        background: $color-orange-50;
+        border-color: $color-orange-200;
+    }
+
+    &.blue {
+        --tone: #{$color-primary-600};
+        background: $color-primary-50;
+        border-color: $color-primary-200;
+    }
+
+    &.green {
+        --tone: #{$color-success-600};
+        background: $color-success-50;
+        border-color: $color-success-200;
+    }
+
+    svg {
+        color: var(--tone);
+    }
+}
+
+.statLabel {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: var(--tone);
+}
+
+.statValue {
+    font-family: $font-family-number;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-black;
+    color: var(--tone);
+    white-space: nowrap;
+}
+
+.statTime {
+    font-size: $font-size-2xs;
+    color: $color-text-muted;
+}
+
+// ─── Stats (desktop panel) ───────────────────────────────────
+.orangeText {
+    color: $color-orange-600;
+}
+
+.blueText {
+    color: $color-primary-600;
+}
+
+.greenText {
+    color: $color-success-600;
+}
+
+// ─── Mini Device (mobile) ────────────────────────────────────
+.mini {
+    padding: $space-6 $space-3;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-2;
+
+    &.red {
+        --accent: #{$color-danger-500};
+        --accent-bg: #{$color-danger-100};
+    }
+
+    &.purple {
+        --accent: #{$color-warning-600};
+        --accent-bg: #{$color-warning-100};
+    }
+
+    &.blue {
+        --accent: #{$color-success-500};
+        --accent-bg: #{$color-primary-100};
+    }
+}
+
+.miniIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-xs;
+    background: var(--accent-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.miniName {
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+}
+
+.miniState {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    color: $color-gray-400;
+
+    &.on {
+        color: var(--accent);
+    }
+}
+
+:global(.status-dot).miniDot {
+    width: 7px;
+    height: 7px;
+
+    &.on {
+        background: var(--accent);
+    }
+}
+
+.miniSub {
+    font-size: $font-size-2xs;
+    color: $color-text-muted;
+}
